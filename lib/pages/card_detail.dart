@@ -40,7 +40,7 @@ class _StateCardDetail extends State<CardDetail> {
     image = widget.song.albumArt == null
         ? null
         : new File.fromUri(Uri.parse(widget.song.albumArt));
-    songs = await widget.db.fetchSongsfromAlbum(widget.song.albumId);
+    songs = await widget.db.fetchSongsFromAlbum(widget.song.albumId);
     setState(() {
       isLoading = false;
     });
@@ -73,8 +73,8 @@ class _StateCardDetail extends State<CardDetail> {
                       children: <Widget>[
                         Hero(
                           tag: widget.song.album,
-                          child: image != null
-                              ? new Image.file(
+                          child: widget.song.albumArt != null
+                              ?  Image.file(
                                   image,
                                   fit: BoxFit.cover,
                                 )
@@ -104,7 +104,7 @@ class _StateCardDetail extends State<CardDetail> {
                                   style: new TextStyle(
                                       fontSize: 20.0,
                                       fontWeight: FontWeight.w600,
-                                      fontFamily: "Quicksand"),
+                                      ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -177,11 +177,12 @@ class _StateCardDetail extends State<CardDetail> {
                           child: new ListTile(
                             leading: Hero(
                                 tag: songs[i].id,
-                                child: Image.file(
+                                child: songs[i].albumArt != null
+                                 ? Image.file(
                                   getImage(songs[i]),
                                   width: 50.0,
                                   height: 50.0,
-                                )),
+                                ) : Icon(Icons.music_note)),
 
                             title: new Text(
                               songs[i].title,
